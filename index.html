@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JotaEdits - Portafolio de Edición de Video</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Animaciones personalizadas */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInRight {
+      0% { opacity: 0; transform: translateX(50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes messageDrop {
+      0% { 
+        opacity: 0;
+        transform: translateY(-100px) scale(0.8);
+      }
+      70% {
+        transform: translateY(10px) scale(1.1);
+      }
+      100% { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .slide-in-right {
+      animation: slideInRight 1s ease-out both;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-out both;
+    }
+
+    .message-drop {
+      animation: messageDrop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+    }
+
+    .fade-in-down {
+      animation: fadeInDown 0.7s ease-in-out both;
+    }
+
+    /* Colores mate personalizados */
+    :root {
+      --mate-blue: #3a4668;
+      --mate-purple: #6d5e8c;
+      --mate-green: #3a6d5a;
+      --mate-bg-dark: #23232b;
+      --mate-bg-light: #2d2d39;
+      --mate-gray: #b0b3c6;
+    }
+
+    .text-purple-400 {
+      color: var(--mate-purple) !important;
+    }
+    .bg-mate-blue {
+      background: var(--mate-blue) !important;
+    }
+    .bg-mate-purple {
+      background: var(--mate-purple) !important;
+    }
+    .bg-mate-dark {
+      background: var(--mate-bg-dark) !important;
+    }
+    .bg-mate-light {
+      background: var(--mate-bg-light) !important;
+    }
+    .text-mate-gray {
+      color: var(--mate-gray) !important;
+    }
+    .icon-mate {
+      color: var(--mate-gray) !important;
+    }
+    .icon-mate:hover {
+      color: var(--mate-purple) !important;
+    }
+
+    /* Estilos para el título */
+    h1 span {
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    h1 span:hover {
+      transform: translateY(-2px);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #231942 0%, #322f5a 50%, #1a1a2e 100%);
+      color: #e0e0e0;
+      scroll-behavior: smooth;
+    }
+
+    /* Animaciones para las secciones */
+    section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+      background: transparent !important;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeInDown 0.7s ease-in-out both;
+    }
+
+    /* Estilo para el scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #4c1d95;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6d28d9;
+    }
+
+    /* Estilos para el mensaje de confirmación */
+    .confirmation-message {
+      position: relative;
+      margin: 0 auto 1.5rem auto;
+      background: transparent;
+      color: #fff;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      width: fit-content;
+      max-width: 90vw;
+      text-align: center;
+      display: none;
+    }
+
+    .confirmation-message.show {
+      display: block;
+    }
+
+    /* Fondo degradado global */
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #231942 0%, #322f5a 50%, #1a1a2e 100%);
+      color: #e0e0e0;
+      scroll-behavior: smooth;
+    }
+    /* Cabecera y footer con fondo sólido oscuro */
+    header, footer {
+      background: #181829;
+    }
+    /* Secciones principales con fondo transparente para dejar ver el degradado */
+    section {
+      background: transparent !important;
+    }
+    /* Botones estilo violeta vibrante */
+    .btn-violeta {
+      background: #8f2fff;
+      color: #fff;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.3s;
+      box-shadow: 0 2px 8px 0 rgba(143,47,255,0.15);
+    }
+    .btn-violeta:hover {
+      background: #6d22b9;
+      transform: scale(1.05);
+    }
+    /* Botón secundario */
+    .btn-outline-violeta {
+      background: transparent;
+      color: #8f2fff;
+      border: 2px solid #8f2fff;
+      border-radius: 9999px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+    .btn-outline-violeta:hover {
+      background: #8f2fff;
+      color: #fff;
+      transform: scale(1.05);
+    }
+    /* Títulos principales */
+    h1, h2, h3, h4 {
+      color: #fff;
+    }
+    /* Texto secundario */
+    .text-secondary {
+      color: #bdbdbd;
+    }
+    /* Íconos de redes sociales */
+    .icon-social {
+      color: #bdbdbd;
+      transition: color 0.3s;
+    }
+    .icon-social:hover {
+      color: #8f2fff;
+    }
+    /* Fondo de inputs y formularios */
+    input, textarea {
+      background: #23234a !important;
+      color: #fff !important;
+      border: 1px solid #322f5a !important;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #bdbdbd !important;
+    }
+    body, h1, h2, h3, h4, h5, h6, button, input, textarea, a {
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif !important;
+      border-radius: 0.5rem;
+    }
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title .white {
+      color: #fff;
+      font-weight: 900;
+    }
+    .section-title .gradient {
+      font-weight: 900;
+      background: linear-gradient(90deg, #8f2fff 0%, #00eaff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    .section-underline {
+      width: 70px;
+      height: 4px;
+      border-radius: 2px;
+      background: #8f2fff;
+      margin: 0.5rem auto 2rem auto;
+      display: block;
+    }
+    section {
+      background: #101a26 !important;
+    }
+    .social-icon-img {
+      transition: transform 0.2s;
+    }
+    .social-icon-img:hover {
+      transform: scale(1.18);
+    }
+    @media (max-width: 768px) {
+      h1, h2, h3, h4 {
+        font-size: 1.5rem !important;
+      }
+      .section-title {
+        font-size: 1.3rem !important;
+      }
+      .btn-violeta, .btn-outline-violeta {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+      }
+      .max-w-7xl, .max-w-6xl, .max-w-4xl, .max-w-xl {
+        max-width: 98vw !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+      .py-20, .py-16, .py-6 {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+      }
+      .px-6 {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+      .grid {
+        grid-template-columns: 1fr !important;
+      }
+      .space-x-6, .space-x-4, .space-x-3, .gap-6, .gap-4 {
+        gap: 1rem !important;
+      }
+      .w-full, .w-36, .md\:w-44 {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      .h-80, .md\:h-80, .md\:h-56, .h-64, .md\:h-64, .md\:h-44 {
+        height: 220px !important;
+        min-height: 0 !important;
+      }
+      .min-h-screen {
+        min-height: 80vh !important;
+      }
+      .flex-col.md\:flex-row {
+        flex-direction: column !important;
+      }
+      .ml-6 {
+        margin-left: 0 !important;
+      }
+      .rounded, .rounded-xl, .rounded-full {
+        border-radius: 0.7rem !important;
+      }
+      .text-4xl, .md\:text-5xl {
+        font-size: 2rem !important;
+      }
+      .text-lg, .md\:text-xl {
+        font-size: 1rem !important;
+      }
+      .footer .flex {
+        flex-direction: row !important;
+        justify-content: center !important;
+      }
+    }
+  </style>
+  <script>
+    // Script para animar las secciones al hacer scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section');
+      
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          } else {
+            entry.target.classList.remove('visible');
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+
+      // Manejo del formulario
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Enviar el formulario
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(response => {
+          if (response.ok) {
+            // Mostrar mensaje profesional con SweetAlert2
+            Swal.fire({
+              title: ' ¡Mensaje enviado con éxito!',
+              text: 'Gracias por contactarme. Te responderé pronto.',
+              icon: 'success',
+              confirmButtonColor: '#8f2fff',
+              background: '#181829',
+              color: '#fff',
+              customClass: {
+                popup: 'rounded-xl'
+              }
+            });
+            form.reset();
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+</head>
+<body class="text-gray-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 shadow fade-in">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <h1 class="text-2xl font-bold"><span class="text-white">Jota</span><span style="color: #8f2fff; font-weight: 900;">Edits</span></h1>
+      <nav class="space-x-4 md:space-x-6 text-sm md:text-base">
+        <a href="#inicio" class="hover:text-purple-400 transition-colors duration-300">Inicio</a>
+        <a href="#sobre-mi" class="hover:text-purple-400 transition-colors duration-300">Sobre mí</a>
+        <a href="#trabajos" class="hover:text-purple-400 transition-colors duration-300">Mis trabajos</a>
+        <a href="#contacto" class="hover:text-purple-400 transition-colors duration-300">Contacto</a>
+      </nav>
+      <div class="flex items-center space-x-1 md:space-x-2 ml-2 md:ml-6">
+        <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="ig.png" alt="Instagram" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+        </a>
+        <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook">
+          <img src="fb.png" alt="Facebook" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+        </a>
+        <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <img src="wsp.png" alt="WhatsApp" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center fade-in-up" style="background: linear-gradient(180deg, #211c2a 0%, #241c36 100%); position: relative;">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4">¡Transformá tus ideas en videos impactantes!</h2>
+    <p class="text-lg md:text-xl mb-6 text-secondary font-normal">Soy Jota, editor profesional especializado en Adobe Premiere Pro.</p>
+    <div class="flex flex-col md:flex-row gap-4 justify-center">
+      <a href="#trabajos" class="btn-violeta">Ver proyectos</a>
+      <a href="#contacto" class="btn-outline-violeta">Contactar</a>
+    </div>
+    <div style="position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; line-height: 0;">
+      <svg viewBox="0 0 1440 90" width="100%" height="90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,60 C360,120 1080,0 1440,60 L1440,90 L0,90 Z" fill="#241c36"/>
+      </svg>
+    </div>
+    <div style="position: absolute; left: 0; right: 0; bottom: 20px; width: 100%; text-align: center; pointer-events: auto; z-index: 10;">
+      <a href="#trabajos" style="cursor:pointer; display:inline-block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+        <span style="font-size: 2.2rem; color: #bdbdbd;">⌄</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Sobre mí -->
+  <section id="sobre-mi" class="py-16 px-6">
+    <div class="max-w-4xl mx-auto text-center slide-in-right">
+      <h3 class="section-title"><span class="white">Sobre</span> <span class="gradient">Mí</span></h3>
+      <span class="section-underline"></span>
+      <p class="text-gray-300 text-lg mb-4">
+        Me llamo Franco Glennon, más conocido como JotaEdits y hace más de 1 año que transformo ideas en videos que impactan. Trabajo con creadores de contenido, marcas y proyectos personales, combinando creatividad y técnica para darles vida a sus mensajes.<br><br>
+        Mi herramienta principal es <strong style="color: #8f2fff;">Adobe Premiere Pro</strong>, y en cada edición me enfoco en los detalles para lograr un resultado profesional, dinámico y auténtico.<br><br>
+        Soy rápido, resolutivo y apasionado por lo que hago. Cada video que edito es una historia que merece ser contada con estilo.<br><br>
+        🎯 Tu contenido merece una edición que lo haga destacar.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mis trabajos -->
+  <section id="trabajos" class="py-16 px-6">
+    <div class="max-w-6xl mx-auto text-center fade-in-up">
+      <h3 class="section-title"><span class="white">Mis</span> <span class="gradient">Trabajos</span></h3>
+      <span class="section-underline"></span>
+
+      <!-- Videos Horizontales -->
+      <div class="mb-12">
+        <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos horizontales</h4>
+        <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
+            <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/kLgisjGr3iU" title="Video horizontal 1" allowfullscreen></iframe>
+          </div>
+          <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
+            <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/_tXNIDARSx8" title="Video horizontal 2" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Videos Verticales -->
+      <div>
+        <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos verticales</h4>
+        <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
+            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
+              <iframe src="https://drive.google.com/file/d/1J7ndBAErORCWvGTHvQITcG-jRmASTRyy/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+            </div>
+          </div>
+          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
+            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
+              <iframe src="https://drive.google.com/file/d/1NmXgwZNdnt82YvJLFRmMnqM45YZ2zbHz/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+            </div>
+          </div>
+          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
+            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
+              <iframe src="https://drive.google.com/file/d/120hyrjFfhI5Tf6nlTEBBj-tWAzciRHdF/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="py-16 px-6">
+    <div class="max-w-xl mx-auto fade-in-up">
+      <h3 class="section-title"><span class="white">Contacto</span></h3>
+      <span class="section-underline"></span>
+      <form method="POST" action="https://formsubmit.co/glennonf.devl@gmail.com" class="space-y-4">
+        <!-- Campos ocultos para configuración -->
+        <input type="hidden" name="_subject" value="¡Nuevo mensaje desde JotaEdits!">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        
+        <!-- Campos del formulario -->
+        <input type="text" name="name" placeholder="Nombre" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required>
+        <input type="text" name="numero" placeholder="Número" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required>
+        <input type="email" name="email" placeholder="Email" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required>
+        <textarea name="message" placeholder="Mensaje" rows="5" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required></textarea>
+        <button type="submit" class="w-full" style="background: #8f2fff; color: #fff; font-weight: 700; border-radius: 0.5rem; padding: 0.75rem 0; font-size: 1.1rem; transition: background 0.3s, transform 0.3s;">Enviar mensaje</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-sm fade-in">
+    <div class="flex justify-center items-center space-x-3 mb-2" style="height: 40px;">
+      <img src="ig.png" alt="Instagram" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      <img src="fb.png" alt="Facebook" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      <img src="wsp.png" alt="WhatsApp" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+    </div>
+    © 2025 JotaEdits
+  </footer>
+</body>
+</html>
