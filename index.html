@@ -339,6 +339,39 @@
         justify-content: center !important;
       }
     }
+    
+    /* Estilos para el carrusel de videos verticales */
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    
+    /* Animación suave para el carrusel */
+    .carousel-slide {
+      transition: transform 0.5s ease-in-out;
+    }
+    
+    /* Efecto hover mejorado para los botones de navegación */
+    #prevBtn:hover, #nextBtn:hover {
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 12px rgba(143, 47, 255, 0.3);
+    }
+    
+    /* Indicadores de posición */
+    .indicator {
+      transition: all 0.3s ease;
+    }
+    .indicator.active {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    .indicator.inactive {
+      opacity: 0.4;
+      transform: scale(1);
+    }
   </style>
   <script>
     // Script para animar las secciones al hacer scroll
@@ -397,6 +430,84 @@
           console.error('Error:', error);
         });
       });
+
+      // --- Carrusel Vertical ---
+      const containerVertical = document.getElementById('verticalVideosContainer');
+      const prevBtnVertical = document.getElementById('prevBtnVertical');
+      const nextBtnVertical = document.getElementById('nextBtnVertical');
+      const progressBarVertical = document.getElementById('progressBarVertical');
+      const progressFillVertical = document.getElementById('progressFillVertical');
+      const verticalVideos = containerVertical.children.length;
+      let currentIndexVertical = 0;
+      const videoWidthVertical = 280 + 24; // min-width + gap
+
+      function updateProgressVertical(index) {
+        const percent = ((index + 1) / verticalVideos) * 100;
+        progressFillVertical.style.width = percent + '%';
+      }
+      function goToVideoVertical(index) {
+        currentIndexVertical = Math.max(0, Math.min(index, verticalVideos - 1));
+        const scrollPosition = currentIndexVertical * videoWidthVertical;
+        containerVertical.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        updateProgressVertical(currentIndexVertical);
+      }
+      prevBtnVertical.addEventListener('click', () => goToVideoVertical(currentIndexVertical - 1));
+      nextBtnVertical.addEventListener('click', () => goToVideoVertical(currentIndexVertical + 1));
+      containerVertical.addEventListener('scroll', () => {
+        const scrollPosition = containerVertical.scrollLeft;
+        const newIndex = Math.round(scrollPosition / videoWidthVertical);
+        if (newIndex !== currentIndexVertical) {
+          currentIndexVertical = newIndex;
+          updateProgressVertical(currentIndexVertical);
+        }
+      });
+      progressBarVertical.addEventListener('click', (e) => {
+        const rect = progressBarVertical.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percent = x / rect.width;
+        const index = Math.floor(percent * verticalVideos);
+        goToVideoVertical(index);
+      });
+      updateProgressVertical(0);
+
+      // --- Carrusel Horizontal ---
+      const containerHorizontal = document.getElementById('horizontalVideosContainer');
+      const prevBtnHorizontal = document.getElementById('prevBtnHorizontal');
+      const nextBtnHorizontal = document.getElementById('nextBtnHorizontal');
+      const progressBarHorizontal = document.getElementById('progressBarHorizontal');
+      const progressFillHorizontal = document.getElementById('progressFillHorizontal');
+      const horizontalVideos = containerHorizontal.children.length;
+      let currentIndexHorizontal = 0;
+      const videoWidthHorizontal = 340 + 24; // min-width + gap
+
+      function updateProgressHorizontal(index) {
+        const percent = ((index + 1) / horizontalVideos) * 100;
+        progressFillHorizontal.style.width = percent + '%';
+      }
+      function goToVideoHorizontal(index) {
+        currentIndexHorizontal = Math.max(0, Math.min(index, horizontalVideos - 1));
+        const scrollPosition = currentIndexHorizontal * videoWidthHorizontal;
+        containerHorizontal.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        updateProgressHorizontal(currentIndexHorizontal);
+      }
+      prevBtnHorizontal.addEventListener('click', () => goToVideoHorizontal(currentIndexHorizontal - 1));
+      nextBtnHorizontal.addEventListener('click', () => goToVideoHorizontal(currentIndexHorizontal + 1));
+      containerHorizontal.addEventListener('scroll', () => {
+        const scrollPosition = containerHorizontal.scrollLeft;
+        const newIndex = Math.round(scrollPosition / videoWidthHorizontal);
+        if (newIndex !== currentIndexHorizontal) {
+          currentIndexHorizontal = newIndex;
+          updateProgressHorizontal(currentIndexHorizontal);
+        }
+      });
+      progressBarHorizontal.addEventListener('click', (e) => {
+        const rect = progressBarHorizontal.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percent = x / rect.width;
+        const index = Math.floor(percent * horizontalVideos);
+        goToVideoHorizontal(index);
+      });
+      updateProgressHorizontal(0);
     });
   </script>
 </head>
@@ -413,32 +524,37 @@
       </nav>
       <div class="flex items-center space-x-1 md:space-x-2 ml-2 md:ml-6">
         <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram">
-          <img src="ig.png" alt="Instagram" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+          <img src="ig-nuevo.png" alt="Instagram" width="36" height="36" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
         <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook">
-          <img src="fb.png" alt="Facebook" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+          <img src="fbnuevo.png" alt="Facebook" width="28" height="28" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
         <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <img src="wsp.png" alt="WhatsApp" width="22" height="22" class="social-icon-img md:w-8 md:h-8" />
+          <img src="wspnuevo.png" alt="WhatsApp" width="32" height="32" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section id="inicio" class="min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center fade-in-up" style="background: linear-gradient(180deg, #211c2a 0%, #241c36 100%); position: relative;">
-    <h2 class="text-4xl md:text-5xl font-bold mb-4">¡Transformá tus ideas en videos impactantes!</h2>
-    <p class="text-lg md:text-xl mb-6 text-secondary font-normal">Soy Jota, editor profesional especializado en Adobe Premiere Pro.</p>
-    <div class="flex flex-col md:flex-row gap-4 justify-center">
-      <a href="#trabajos" class="btn-violeta">Ver proyectos</a>
-      <a href="#contacto" class="btn-outline-violeta">Contactar</a>
+  <section id="inicio" class="min-h-screen flex flex-col justify-center items-center py-20 px-6 text-center fade-in-up" style="background: linear-gradient(180deg, #211c2a 0%, #241c36 100%); position: relative; overflow: hidden;">
+    <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.78; pointer-events: none; filter: blur(8px);" id="video-fondo">
+      <source src="videofondo.mp4" type="video/mp4">
+    </video>
+    <div style="position: relative; z-index: 1; width: 100%;">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">¡Transformá tus ideas en videos impactantes!</h2>
+      <p class="text-lg md:text-xl mb-6 text-secondary font-normal">Soy Jota, editor profesional especializado en Adobe Premiere Pro.</p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="#trabajos" class="btn-violeta">Ver proyectos</a>
+        <a href="#contacto" class="btn-outline-violeta">Contacto</a>
+      </div>
     </div>
-    <div style="position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; line-height: 0;">
+    <div style="position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; line-height: 0; z-index: 2;">
       <svg viewBox="0 0 1440 90" width="100%" height="90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
         <path d="M0,60 C360,120 1080,0 1440,60 L1440,90 L0,90 Z" fill="#241c36"/>
       </svg>
     </div>
-    <div style="position: absolute; left: 0; right: 0; bottom: 20px; width: 100%; text-align: center; pointer-events: auto; z-index: 10;">
+    <div style="position: absolute; left: 0; right: 0; bottom: 20px; width: 100%; text-align: center; pointer-events: auto; z-index: 3;">
       <a href="#trabajos" style="cursor:pointer; display:inline-block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
         <span style="font-size: 2.2rem; color: #bdbdbd;">⌄</span>
       </a>
@@ -460,43 +576,76 @@
   </section>
 
   <!-- Mis trabajos -->
-  <section id="trabajos" class="py-16 px-6">
-    <div class="max-w-6xl mx-auto text-center fade-in-up">
-      <h3 class="section-title"><span class="white">Mis</span> <span class="gradient">Trabajos</span></h3>
-      <span class="section-underline"></span>
-
-      <!-- Videos Horizontales -->
-      <div class="mb-12">
-        <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos horizontales</h4>
-        <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
-            <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/kLgisjGr3iU" title="Video horizontal 1" allowfullscreen></iframe>
-          </div>
-          <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
-            <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/_tXNIDARSx8" title="Video horizontal 2" allowfullscreen></iframe>
+  <section id="trabajos" class="py-16 px-6" style="position: relative; overflow: hidden;">
+    <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.78; pointer-events: none; filter: blur(8px);" id="video-fondo-trabajos">
+      <source src="video2.mp4" type="video/mp4">
+    </video>
+    <div style="position: relative; z-index: 1; width: 100%;">
+      <div class="max-w-6xl mx-auto text-center fade-in-up">
+        <h3 class="section-title"><span class="white">Mis</span> <span class="gradient">Trabajos</span></h3>
+        <span class="section-underline"></span>
+        <!-- Carrusel de Videos Verticales -->
+        <div class="mb-16">
+          <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos verticales</h4>
+          <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
+          <div class="relative max-w-6xl mx-auto">
+            <button id="prevBtnVertical" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-mate-dark hover:bg-mate-purple text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-80 hover:opacity-100 hidden md:block" style="background: #8f2fff;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button id="nextBtnVertical" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-mate-dark hover:bg-mate-purple text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-80 hover:opacity-100 hidden md:block" style="background: #8f2fff;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div id="verticalVideosContainer" class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4 md:px-12" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
+              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
+                <div style="width:100%; aspect-ratio:9/16;">
+                  <iframe src="https://drive.google.com/file/d/1J7ndBAErORCWvGTHvQITcG-jRmASTRyy/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+                </div>
+              </div>
+              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
+                <div style="width:100%; aspect-ratio:9/16;">
+                  <iframe src="https://drive.google.com/file/d/1NmXgwZNdnt82YvJLFRmMnqM45YZ2zbHz/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+                </div>
+              </div>
+              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
+                <div style="width:100%; aspect-ratio:9/16;">
+                  <iframe src="https://drive.google.com/file/d/120hyrjFfhI5Tf6nlTEBBj-tWAzciRHdF/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+                </div>
+              </div>
+              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
+                <div style="width:100%; aspect-ratio:9/16;">
+                  <iframe src="https://drive.google.com/file/d/1IzdF7K16n7Wb2aFQ9sK6-97jRXv23lRE/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+                </div>
+              </div>
+            </div>
+            <!-- Barra de progreso vertical -->
+            <div class="w-full h-1 bg-gray-700 rounded-full mt-3 cursor-pointer relative" id="progressBarVertical" style="max-width: 220px; margin: 0 auto;">
+              <div id="progressFillVertical" class="h-1 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full transition-all duration-300" style="width: 25%;"></div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Videos Verticales -->
-      <div>
-        <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos verticales</h4>
-        <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
-            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
-              <iframe src="https://drive.google.com/file/d/1J7ndBAErORCWvGTHvQITcG-jRmASTRyy/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+        <!-- Carrusel de Videos Horizontales -->
+        <div>
+          <h4 class="text-2xl font-extrabold mb-2" style="font-family: 'Montserrat', Arial, sans-serif; font-weight: 900; border-radius: 0.5rem;">Videos horizontales</h4>
+          <span style="display:block;width:60px;height:4px;background:#8f2fff;border-radius:2px;margin:0 auto 1.5rem auto;"></span>
+          <div class="relative max-w-6xl mx-auto">
+            <button id="prevBtnHorizontal" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-mate-dark hover:bg-mate-purple text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-80 hover:opacity-100 hidden md:block" style="background: #8f2fff;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button id="nextBtnHorizontal" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-mate-dark hover:bg-mate-purple text-white p-3 rounded-full shadow-lg transition-all duration-300 opacity-80 hover:opacity-100 hidden md:block" style="background: #8f2fff;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            <div id="horizontalVideosContainer" class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4 md:px-12" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
+              <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 340px; max-width: 520px;">
+                <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/kLgisjGr3iU" title="Video horizontal 1" allowfullscreen></iframe>
+              </div>
+              <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 340px; max-width: 520px;">
+                <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/_tXNIDARSx8" title="Video horizontal 2" allowfullscreen></iframe>
+              </div>
             </div>
-          </div>
-          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
-            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
-              <iframe src="https://drive.google.com/file/d/1NmXgwZNdnt82YvJLFRmMnqM45YZ2zbHz/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
-            </div>
-          </div>
-          <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col items-center">
-            <div style="width:100%; max-width:360px; aspect-ratio:9/16;">
-              <iframe src="https://drive.google.com/file/d/120hyrjFfhI5Tf6nlTEBBj-tWAzciRHdF/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+            <!-- Barra de progreso horizontal -->
+            <div class="w-full h-1 bg-gray-700 rounded-full mt-3 cursor-pointer relative" id="progressBarHorizontal" style="max-width: 220px; margin: 0 auto;">
+              <div id="progressFillHorizontal" class="h-1 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full transition-all duration-300" style="width: 50%;"></div>
             </div>
           </div>
         </div>
@@ -528,9 +677,15 @@
   <!-- Footer -->
   <footer class="text-center py-6 text-sm fade-in">
     <div class="flex justify-center items-center space-x-3 mb-2" style="height: 40px;">
-      <img src="ig.png" alt="Instagram" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
-      <img src="fb.png" alt="Facebook" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
-      <img src="wsp.png" alt="WhatsApp" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram" class="transition-transform duration-200 hover:scale-110">
+        <img src="ig-nuevo.png" alt="Instagram" width="36" height="36" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      </a>
+      <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook" class="transition-transform duration-200 hover:scale-110">
+        <img src="fbnuevo.png" alt="Facebook" width="28" height="28" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      </a>
+      <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp" class="transition-transform duration-200 hover:scale-110">
+        <img src="wspnuevo.png" alt="WhatsApp" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      </a>
     </div>
     © 2025 JotaEdits
   </footer>
