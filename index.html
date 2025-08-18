@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JotaEdits - Portafolio de Edición de Video</title>
+  <title>JotaEdits - Editor de Videos</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     /* Animaciones personalizadas */
     @keyframes fadeInUp {
@@ -184,17 +186,28 @@
     }
     /* Botones estilo violeta vibrante */
     .btn-violeta {
-      background: #8f2fff;
+      background: linear-gradient(135deg, #8f2fff 0%, #6d22b9 100%);
       color: #fff;
       border-radius: 9999px;
-      padding: 0.75rem 2rem;
-      font-weight: 600;
-      transition: background 0.3s, transform 0.3s;
-      box-shadow: 0 2px 8px 0 rgba(143,47,255,0.15);
+      padding: 0.875rem 2.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px 0 rgba(143,47,255,0.3);
+      border: none;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      min-width: 160px;
     }
     .btn-violeta:hover {
-      background: #6d22b9;
-      transform: scale(1.05);
+      background: linear-gradient(135deg, #6d22b9 0%, #5a1a9e 100%);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px 0 rgba(143,47,255,0.5), 0 4px 15px 0 rgba(143,47,255,0.3);
+    }
+    .btn-violeta:active {
+      transform: translateY(-1px) scale(1.02);
+      transition: all 0.1s ease;
     }
     /* Botón secundario */
     .btn-outline-violeta {
@@ -202,18 +215,71 @@
       color: #8f2fff;
       border: 2px solid #8f2fff;
       border-radius: 9999px;
-      padding: 0.75rem 2rem;
+      padding: 0.875rem 2.5rem;
       font-weight: 600;
-      transition: background 0.3s, color 0.3s, transform 0.3s;
+      font-size: 1.1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      min-width: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-outline-violeta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #8f2fff 0%, #6d22b9 100%);
+      transition: left 0.3s ease;
+      z-index: -1;
     }
     .btn-outline-violeta:hover {
-      background: #8f2fff;
       color: #fff;
-      transform: scale(1.05);
+      border-color: #8f2fff;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px 0 rgba(143,47,255,0.4), 0 4px 15px 0 rgba(143,47,255,0.2);
+    }
+    .btn-outline-violeta:hover::before {
+      left: 0;
+    }
+    .btn-outline-violeta:active {
+      transform: translateY(-1px) scale(1.02);
+      transition: all 0.1s ease;
     }
     /* Títulos principales */
     h1, h2, h3, h4 {
       color: #fff;
+    }
+    
+    /* Título principal del Hero con tipografía moderna */
+    .hero-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(143, 47, 255, 0.3);
+      background: linear-gradient(135deg, #8f2fff 0%, #ffffff 50%, #f3f4f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 8px rgba(143, 47, 255, 0.2));
+    }
+    
+    /* Subtítulo del Hero */
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.125rem, 3vw, 1.25rem);
+      line-height: 1.6;
+      color: #d1d5db;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      margin-bottom: 2rem;
     }
     /* Texto secundario */
     .text-secondary {
@@ -286,8 +352,19 @@
         font-size: 1.3rem !important;
       }
       .btn-violeta, .btn-outline-violeta {
-        padding: 0.6rem 1.2rem;
+        padding: 0.75rem 1.5rem;
         font-size: 1rem;
+        min-width: 140px;
+      }
+      .hero-title {
+        font-size: clamp(2rem, 8vw, 2.5rem);
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.125rem);
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
       }
       .max-w-7xl, .max-w-6xl, .max-w-4xl, .max-w-xl {
         max-width: 98vw !important;
@@ -338,6 +415,11 @@
         flex-direction: row !important;
         justify-content: center !important;
       }
+      /* Iconos de redes sociales más pequeños en móvil */
+      .social-icon-img {
+        width: 36px !important;
+        height: 36px !important;
+      }
     }
     
     /* Estilos para el carrusel de videos verticales */
@@ -372,6 +454,96 @@
       opacity: 0.4;
       transform: scale(1);
     }
+
+    /* Estilos mejorados para las tarjetas de video */
+    .video-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .video-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(143, 47, 255, 0.25);
+    }
+
+    .video-card iframe {
+      transition: transform 0.3s ease;
+    }
+
+    .video-card:hover iframe {
+      transform: scale(1.05);
+    }
+
+    /* Efectos de overlay mejorados */
+    .video-card .absolute.inset-0 {
+      background: linear-gradient(135deg, rgba(143, 47, 255, 0.1) 0%, rgba(0, 234, 255, 0.1) 100%);
+    }
+
+    /* Animaciones para el texto del overlay */
+    .video-card .absolute.bottom-0 {
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 0 0 12px 12px;
+    }
+
+    /* Efectos de brillo en hover */
+    .video-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .video-card:hover::before {
+      left: 100%;
+    }
+
+    /* Mejoras para los botones de navegación */
+    #prevBtnVertical, #nextBtnVertical, #prevBtnHorizontal, #nextBtnHorizontal {
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(143, 47, 255, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #prevBtnVertical:hover, #nextBtnVertical:hover, #prevBtnHorizontal:hover, #nextBtnHorizontal:hover {
+      background: linear-gradient(135deg, #8f2fff 0%, #6d22b9 100%) !important;
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 8px 25px rgba(143, 47, 255, 0.4);
+    }
+
+    /* Mejoras para las barras de progreso */
+    #progressBarVertical, #progressBarHorizontal {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(143, 47, 255, 0.3);
+    }
+
+    #progressFillVertical, #progressFillHorizontal {
+      background: linear-gradient(90deg, #8f2fff 0%, #00eaff 100%);
+      box-shadow: 0 0 10px rgba(143, 47, 255, 0.5);
+    }
+
+    /* Mejorar la reproducción de videos */
+    .video-card iframe {
+      pointer-events: auto;
+      transition: all 0.3s ease;
+    }
+
+    .video-card:hover iframe {
+      transform: scale(1.02);
+    }
+
+    /* Indicador de que el video es clickeable */
+    .video-card {
+      cursor: pointer;
+    }
   </style>
   <script>
     // Script para animar las secciones al hacer scroll
@@ -398,36 +570,76 @@
         observer.observe(section);
       });
 
-      // Manejo del formulario
-      const form = document.querySelector('form');
+      // Manejo del formulario con EmailJS
+      const form = document.getElementById('contactForm');
+
+      // Inicializar EmailJS
+      emailjs.init("4E3DxlaFIkM8K1pk9"); // Tu User ID real de EmailJS
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Enviar el formulario
-        fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form)
+        // Mostrar indicador de carga
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Enviando...';
+        submitBtn.disabled = true;
+        
+        // Recopilar datos del formulario
+        const formData = {
+          name: form.querySelector('input[name="name"]').value,
+          numero: form.querySelector('input[name="numero"]').value,
+          email: form.querySelector('input[name="email"]').value,
+          message: form.querySelector('textarea[name="message"]').value
+        };
+
+        // Enviar email usando EmailJS
+        emailjs.send("service_mkigyt5", "template_y9j0qga", {
+          to_name: "JotaEdits",
+          from_name: formData.name,
+          from_number: formData.numero,
+          from_email: formData.email,
+          message: formData.message,
+          reply_to: formData.email
         })
-        .then(response => {
-          if (response.ok) {
-            // Mostrar mensaje profesional con SweetAlert2
-            Swal.fire({
-              title: ' ¡Mensaje enviado con éxito!',
-              text: 'Gracias por contactarme. Te responderé pronto.',
-              icon: 'success',
-              confirmButtonColor: '#8f2fff',
-              background: '#181829',
-              color: '#fff',
-              customClass: {
-                popup: 'rounded-xl'
-              }
-            });
-            form.reset();
-          }
+        .then(function(response) {
+          console.log('Email enviado exitosamente:', response);
+          
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: '¡Mensaje enviado con éxito!',
+            text: 'Gracias por contactarme. Te responderé pronto.',
+            icon: 'success',
+            confirmButtonColor: '#8f2fff',
+            background: '#181829',
+            color: '#fff',
+            customClass: {
+              popup: 'rounded-xl'
+            }
+          });
+          
+          form.reset();
         })
-        .catch(error => {
-          console.error('Error:', error);
+        .catch(function(error) {
+          console.error('Error al enviar email:', error);
+          
+          // Mostrar error al usuario
+          Swal.fire({
+            title: 'Error al enviar el mensaje',
+            text: 'Por favor, intenta enviar el formulario nuevamente o contacta directamente por WhatsApp: https://wa.link/j149vu',
+            icon: 'error',
+            confirmButtonColor: '#8f2fff',
+            background: '#181829',
+            color: '#fff',
+            customClass: {
+              popup: 'rounded-xl'
+            }
+          });
+        })
+        .finally(() => {
+          // Restaurar botón
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
         });
       });
 
@@ -508,6 +720,40 @@
         goToVideoHorizontal(index);
       });
       updateProgressHorizontal(0);
+
+      // --- Funcionalidad mejorada para videos ---
+      // Hacer que los videos sean clickeables
+      const videoCards = document.querySelectorAll('.video-card');
+      
+      videoCards.forEach(card => {
+        const iframe = card.querySelector('iframe');
+        
+        // Hacer que toda la tarjeta sea clickeable
+        card.addEventListener('click', function(e) {
+          // Enfocar el iframe para permitir reproducción
+          iframe.focus();
+          
+          // Mostrar indicador visual de que se puede reproducir
+          card.style.transform = 'scale(1.05)';
+          setTimeout(() => {
+            card.style.transform = '';
+          }, 200);
+        });
+      });
+
+      // Mejorar la experiencia de scroll en móviles
+      const containers = [containerVertical, containerHorizontal];
+      containers.forEach(container => {
+        if (container) {
+          container.addEventListener('touchstart', function() {
+            this.style.scrollBehavior = 'auto';
+          });
+          
+          container.addEventListener('touchend', function() {
+            this.style.scrollBehavior = 'smooth';
+          });
+        }
+      });
     });
   </script>
 </head>
@@ -522,15 +768,15 @@
         <a href="#trabajos" class="hover:text-purple-400 transition-colors duration-300">Mis trabajos</a>
         <a href="#contacto" class="hover:text-purple-400 transition-colors duration-300">Contacto</a>
       </nav>
-      <div class="flex items-center space-x-1 md:space-x-2 ml-2 md:ml-6">
+      <div class="flex items-center space-x-3 md:space-x-4 ml-4 md:ml-8">
         <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram">
-          <img src="ig-nuevo.png" alt="Instagram" width="36" height="36" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+          <img src="ig-nuevo.png" alt="Instagram" width="42" height="42" class="social-icon-img md:w-10 md:h-10 align-middle hover:scale-110 transition-transform duration-200" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
         <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook">
-          <img src="fbnuevo.png" alt="Facebook" width="28" height="28" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+          <img src="fbnuevo.png" alt="Facebook" width="34" height="34" class="social-icon-img md:w-10 md:h-10 align-middle hover:scale-110 transition-transform duration-200" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
         <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <img src="wspnuevo.png" alt="WhatsApp" width="32" height="32" class="social-icon-img md:w-8 md:h-8 align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+          <img src="wspnuevo.png" alt="WhatsApp" width="38" height="38" class="social-icon-img md:w-10 md:h-10 align-middle hover:scale-110 transition-transform duration-200" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
         </a>
       </div>
     </div>
@@ -542,11 +788,11 @@
       <source src="videofondo.mp4" type="video/mp4">
     </video>
     <div style="position: relative; z-index: 1; width: 100%;">
-      <h2 class="text-4xl md:text-5xl font-bold mb-4">¡El empujón que tu video necesita para brillar!</h2>
-      <p class="text-lg md:text-xl mb-6 text-secondary font-normal">Soy Jota, editor profesional especializado en <span style="color: #623c8b; font-weight: 900;">Adobe Premiere Pro.</span></p>
+      <h2 class="hero-title mb-6">Transformo tus podcasts en contenido profesional</h2>
+      <p class="hero-subtitle mb-8">Soy Jota, editor especializado en podcasts y contenido audiovisual</p>
       <div class="flex flex-col md:flex-row gap-4 justify-center">
         <a href="#trabajos" class="btn-violeta">Ver trabajos</a>
-        <a href="#contacto" class="btn-violeta">Contacto</a>
+        <a href="#contacto" class="btn-outline-violeta">Contacto</a>
       </div>
     </div>
     <div style="position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; line-height: 0; z-index: 2;">
@@ -567,7 +813,7 @@
       <h3 class="section-title"><span class="white">Sobre</span> <span class="gradient">Mí</span></h3>
       <span class="section-underline"></span>
       <p class="text-gray-300 text-lg mb-4">
-        Me llamo Franco Glennon, más conocido como JotaEdits y hace más de 1 año que transformo ideas en videos que impactan. Trabajo con creadores de contenido, marcas y proyectos personales, combinando creatividad y técnica para darles vida a sus mensajes.<br><br>
+        Hola, JotaEdits y hace más de 1 año que transformo ideas en videos que impactan. Trabajo con creadores de contenido, marcas y proyectos personales, combinando creatividad y técnica para darles vida a sus mensajes.<br><br>
         Mi herramienta principal es <span class="gradient">Adobe Premiere Pro</span>, y en cada edición me enfoco en los detalles para lograr un resultado profesional, dinámico y auténtico.<br><br>
         Soy rápido, resolutivo y apasionado por lo que hago. Cada video que edito es una historia que merece ser contada con estilo.<br><br>
         🎯 Tu contenido merece una edición que lo haga destacar.
@@ -596,34 +842,112 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
             <div id="verticalVideosContainer" class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4 md:px-12" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/1DpRqtf52vi6AATBZCihLUKOg1OAwo3-k/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1t_TcgReZzf28OecCEA-1hG5dSCIX5n6-/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Himnos</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/120hyrjFfhI5Tf6nlTEBBj-tWAzciRHdF/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1Bv7dXfq4eAND-vvpXESYRW_XP4OY_k-T/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Reglas de Convivencia</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/1IzdF7K16n7Wb2aFQ9sK6-97jRXv23lRE/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/18SaWzDcFTkAesJeQ6Ar1rTtzSBKwMIAp/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Tipos de Huespedes</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/1PHms9jvHyeMtb5irYqlI5rpy3iVghdli/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1DpRqtf52vi6AATBZCihLUKOg1OAwo3-k/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Video para Tiktok</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/1NmXgwZNdnt82YvJLFRmMnqM45YZ2zbHz/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/120hyrjFfhI5Tf6nlTEBBj-tWAzciRHdF/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Video para Tiktok</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
-              <div class="bg-mate-light p-2 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 280px; max-width: 360px;">
-                <div style="width:100%; aspect-ratio:9/16;">
-                  <iframe src="https://drive.google.com/file/d/1J7ndBAErORCWvGTHvQITcG-jRmASTRyy/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%;"></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1IzdF7K16n7Wb2aFQ9sK6-97jRXv23lRE/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Edit Para Tiktok Personalizado</h5>
+                  <p class="text-xs text-gray-300">Edición profesional (Incluye uso de Photoshop)</p>
+                </div>
+              </div>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1PHms9jvHyeMtb5irYqlI5rpy3iVghdli/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Video para Tiktok</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Dinámico</p>
+                </div>
+              </div>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1NmXgwZNdnt82YvJLFRmMnqM45YZ2zbHz/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Video para Tiktok</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
+                </div>
+              </div>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 280px; max-width: 360px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <div style="width:100%; aspect-ratio:9/16; position: relative;">
+                    <iframe src="https://drive.google.com/file/d/1J7ndBAErORCWvGTHvQITcG-jRmASTRyy/preview" width="100%" height="100%" allow="autoplay" style="border-radius: 12px; background: #000; display:block; width:100%; height:100%; transition: transform 0.3s ease;"></iframe>
+                  </div>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-3 text-center">
+                  <h5 class="font-bold text-sm mb-1 text-white">Video para Tiktok</h5>
+                  <p class="text-xs text-gray-300">Edición Estilo Podcast</p>
                 </div>
               </div>
             </div>
@@ -646,11 +970,31 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
             <div id="horizontalVideosContainer" class="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4 md:px-12" style="scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none;">
-              <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 340px; max-width: 520px;">
-                <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/kLgisjGr3iU" title="Video horizontal 1" allowfullscreen></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 340px; max-width: 520px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/kLgisjGr3iU" title="Video horizontal 1" allowfullscreen style="border-radius: 12px; transition: transform 0.3s ease;"></iframe>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-4 text-center">
+                  <h5 class="font-bold text-lg mb-2 text-white">Video para Youtube</h5>
+                  <p class="text-sm text-gray-300">Video para YT:Elprimaje</p>
+                  <div class="flex items-center justify-center mt-2">
+                    <span class="bg-purple-600 text-white text-xs px-2 py-1 rounded-full">YouTube</span>
+                  </div>
+                </div>
               </div>
-              <div class="bg-mate-light p-4 rounded shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex-shrink-0" style="min-width: 340px; max-width: 520px;">
-                <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/_tXNIDARSx8" title="Video horizontal 2" allowfullscreen></iframe>
+              <div class="video-card bg-mate-light rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 flex-shrink-0 group" style="min-width: 340px; max-width: 520px; background: linear-gradient(145deg, #2d2d39 0%, #23232b 100%); border: 1px solid #3a3a4a;">
+                <div class="relative overflow-hidden rounded-xl">
+                  <iframe class="w-full h-80 md:h-[28rem]" src="https://www.youtube.com/embed/_tXNIDARSx8" title="Video horizontal 2" allowfullscreen style="border-radius: 12px; transition: transform 0.3s ease;"></iframe>
+                </div>
+                <!-- Descripción fuera del video -->
+                <div class="p-4 text-center">
+                  <h5 class="font-bold text-lg mb-2 text-white">Video para Youtube</h5>
+                  <p class="text-sm text-gray-300">Video para YT:Elprimaje</p>
+                  <div class="flex items-center justify-center mt-2">
+                    <span class="bg-red-600 text-white text-xs px-2 py-1 rounded-full">YouTube</span>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- Barra de progreso horizontal -->
@@ -668,12 +1012,7 @@
     <div class="max-w-xl mx-auto fade-in-up">
       <h3 class="section-title"><span class="white">Contacto</span></h3>
       <span class="section-underline"></span>
-      <form method="POST" action="https://formsubmit.co/glennonf.devl@gmail.com" class="space-y-4">
-        <!-- Campos ocultos para configuración -->
-        <input type="hidden" name="_subject" value="¡Nuevo mensaje desde JotaEdits!">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        
+      <form id="contactForm" class="space-y-4">
         <!-- Campos del formulario -->
         <input type="text" name="name" placeholder="Nombre" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required>
         <input type="text" name="numero" placeholder="Número" class="w-full p-3 bg-mate-dark border border-gray-700 rounded focus:ring-2 focus:ring-mate-purple text-mate-gray placeholder-gray-400" required>
@@ -685,19 +1024,23 @@
   </section>
 
   <!-- Footer -->
-  <footer class="text-center py-6 text-sm fade-in">
-    <div class="flex justify-center items-center space-x-3 mb-2" style="height: 40px;">
-      <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram" class="transition-transform duration-200 hover:scale-110">
-        <img src="ig-nuevo.png" alt="Instagram" width="36" height="36" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+  <footer class="text-center py-8 text-sm fade-in bg-gradient-to-t from-gray-900 to-transparent">
+    <div class="flex justify-center items-center space-x-6 mb-6" style="height: 60px;">
+      <a href="https://www.instagram.com/frannglennon/" target="_blank" rel="noopener" aria-label="Instagram" class="transition-all duration-300 hover:scale-125 hover:rotate-3">
+        <img src="ig-nuevo.png" alt="Instagram" width="48" height="48" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
       </a>
-      <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook" class="transition-transform duration-200 hover:scale-110">
-        <img src="fbnuevo.png" alt="Facebook" width="28" height="28" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      <a href="https://www.facebook.com/GlennonF.devl/" target="_blank" rel="noopener" aria-label="Facebook" class="transition-all duration-300 hover:scale-125 hover:-rotate-3">
+        <img src="fbnuevo.png" alt="Facebook" width="40" height="40" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
       </a>
-      <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp" class="transition-transform duration-200 hover:scale-110">
-        <img src="wspnuevo.png" alt="WhatsApp" width="32" height="32" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
+      <a href="https://wa.link/j149vu" target="_blank" rel="noopener" aria-label="WhatsApp" class="transition-all duration-300 hover:scale-125 hover:rotate-3">
+        <img src="wspnuevo.png" alt="WhatsApp" width="44" height="44" class="social-icon-img align-middle" style="display:inline-block;vertical-align:middle;object-fit:contain;" />
       </a>
     </div>
-    © 2025 JotaEdits
+    <div class="space-y-2">
+      <p class="text-gray-300 font-medium">© 2025 JotaEdits - Editor de Podcasts Profesional</p>
+      <p class="text-gray-500 text-sm">Transformando ideas en contenido audiovisual de calidad</p>
+      <p class="text-gray-600 text-xs mt-4">Especialista en edición de podcasts y contenido para redes sociales</p>
+    </div>
   </footer>
 </body>
 </html>
