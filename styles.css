@@ -459,7 +459,7 @@
   }
 
   .video-card:hover iframe {
-    transform: scale(1.05);
+    transform: scale(1.02);
   }
 
   /* Efectos de overlay mejorados */
@@ -521,10 +521,6 @@
   .video-card iframe {
     pointer-events: auto;
     transition: all 0.3s ease;
-  }
-
-  .video-card:hover iframe {
-    transform: scale(1.02);
   }
 
   /* Indicador de que el video es clickeable */
@@ -591,3 +587,23 @@
   .colorcito {
     color: var(--acento) !important;     
   }
+
+  /* FIX DEFINITIVO VIDEOS VERTICALES - CROSS BROWSER */
+.video-card {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: unset !important;
+  overflow: hidden;
+  background: #000;
+}
+
+.video-card iframe,
+.video-card video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
